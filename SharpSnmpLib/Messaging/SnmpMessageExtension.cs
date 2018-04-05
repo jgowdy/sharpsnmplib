@@ -254,7 +254,14 @@ namespace Lextm.SharpSnmpLib.Messaging
             }
 
             var bytes = message.ToBytes();
-            socket.BeginSendTo(bytes, 0, bytes.Length, SocketFlags.None, manager, ar => socket.EndSendTo(ar), null);
+            socket.BeginSendTo(bytes, 0, bytes.Length, SocketFlags.None, manager, ar =>
+                {
+                    try
+                    {
+                        socket.EndSendTo(ar);
+                    } catch(Exception) { }
+                }
+                , null);
         }
         
         /// <summary>
